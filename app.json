@@ -1,0 +1,64 @@
+{
+  "expo": {
+    "name": "FrescApp",
+    "slug": "arq-app-compras",
+    "version": "5.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "FrescApp usa la cámara para leer códigos de barras y fechas del envase. Las fotos se procesan en el dispositivo.",
+          "recordAudioAndroid": false,
+          "microphonePermission": false
+        }
+      ],
+      "expo-font",
+      "expo-image",
+      "expo-router",
+      "expo-splash-screen",
+      "expo-status-bar",
+      "expo-web-browser",
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "defaultChannel": "frescapp-vencimientos-v1"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d6802ebe-a08b-4259-ab15-9e5bdc6a490e"
+      }
+    },
+    "android": {
+      "package": "com.k1ng03.arqappcompras",
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    }
+  }
+}

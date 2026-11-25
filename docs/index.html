@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Acceso a las entregas de FrescApp por hito." />
+    <title>FrescApp · Entregas del proyecto</title>
+    <style>
+      :root { color-scheme: light; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #17233d; background: #f4f7fc; }
+      * { box-sizing: border-box; }
+      body { margin: 0; }
+      header { padding: 48px max(24px, calc((100vw - 1040px) / 2)); color: white; background: linear-gradient(125deg, #123c9b, #1765bb); }
+      header p { margin: 10px 0 0; color: #e3ecff; line-height: 1.6; }
+      main { width: min(1040px, calc(100% - 40px)); margin: 34px auto 60px; }
+      h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); }
+      h2 { margin-top: 0; color: #123c9b; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+      article { padding: 26px; border: 1px solid #d7e1f1; border-radius: 16px; background: white; box-shadow: 0 8px 24px #19356a0d; }
+      article p { color: #52617a; line-height: 1.6; }
+      a { color: #1246a8; font-weight: 650; }
+      .button { display: inline-block; padding: 11px 16px; border-radius: 9px; color: white; background: #1246a8; text-decoration: none; }
+      ul { padding-left: 20px; line-height: 1.9; }
+      footer { margin-top: 24px; color: #66748b; font-size: .92rem; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>FrescApp</h1>
+      <p>Proyecto semestral · Accesos directos a documentos, código y presentaciones.</p>
+    </header>
+    <main>
+      <section class="grid" aria-label="Entregas por hito">
+        <article>
+          <h2>Hito 1 · Propuesta</h2>
+          <p>La propuesta del producto, sus diagramas y la presentación del equipo.</p>
+          <a class="button" href="hito1/presentacion/">Abrir presentación</a>
+          <ul>
+            <li><a href="FrescAPP.pdf">Documento de propuesta (PDF)</a></li>
+            <li><a href="Mapa_Producto.png">Mapa del producto</a></li>
+            <li><a href="Diagrama_Arquitectura.png">Diagrama de arquitectura</a></li>
+          </ul>
+        </article>
+        <article>
+          <h2>Hito 2 · Backend</h2>
+          <p>Servicio REST, capas, persistencia en Firestore Emulator y colección de pruebas.</p>
+          <a class="button" href="hito2/presentacion/">Abrir presentación</a>
+          <ul>
+            <li><a href="hito2/FrescApp-Backend-Hito2.pdf">Documento técnico (PDF)</a></li>
+            <li><a href="hito2/BACKEND_HITO2.md">Documento técnico editable</a></li>
+            <li><a href="hito2/FrescApp-Hito2.postman_collection.json">Colección Postman</a></li>
+            <li><a href="hito2/evidencias/">Informes y evidencias</a></li>
+          </ul>
+        </article>
+      </section>
+      <footer>Hito 3: se añadirá cuando se publique su pauta oficial.</footer>
+    </main>
+  </body>
+</html>
