@@ -76,7 +76,7 @@ La API valida nombre, unidad y cantidad; la unidad `unidad` exige cantidad enter
 
 La colección usada por el flujo es `usuarios/{uid}/listaCompras/{id}`. Cada documento contiene `nombre`, `cantidad`, `unidad`, `comprado`, `creadoEn` y `actualizadoEn`. El ID no se entrega desde el cliente; Firestore lo asigna. El UID se deriva del token validado, no de un campo del cuerpo.
 
-La aplicación también trata correo, nombre/apodo, identificador de cuenta, inventario, fechas de vencimiento, ubicaciones, historial, catálogo privado y datos de hogar. La cámara se activa cuando la persona solicita escanear; el aviso de la aplicación declara que OCR se procesa en el dispositivo y que las copias temporales se eliminan al terminar.
+La aplicación también trata correo, nombre/apodo, identificador de cuenta, inventario, fechas de vencimiento, ubicaciones, historial, catálogo privado y datos de hogar. La cámara se activa para leer códigos de barras; el vencimiento se ingresa manualmente. La versión actual no guarda ni envía fotografías ni ejecuta OCR de fechas. El aviso visible fue ajustado para describir este comportamiento.
 
 Las operaciones REST verifican el ID token y validan datos en el servidor; el acceso por SDK cliente se controla además con reglas de Firestore. La eliminación de cuenta tiene un flujo servidor y una solicitud técnica que se conserva al menos 24 horas después de completarse, según el código y el aviso actual.
 
@@ -90,13 +90,13 @@ La guía permite repetir el procedimiento en otra máquina, pero el equipo aún 
 
 ## 9. Evolución de decisiones y registro
 
-| Fecha/etapa | Decisión | Alternativa considerada | Motivo, impacto y límite |
+| Hito / decisión | Decisión | Alternativa considerada | Motivo, impacto y límite |
 | --- | --- | --- | --- |
 | Hito 1 | Firebase como base para identidad y datos del producto. | Separar desde el inicio la persistencia en otro proveedor. | Reutiliza la arquitectura base del proyecto; conserva dependencia del ecosistema Firebase. |
 | Hito 2 | Monolito modular con API REST propia, capas y Firestore. | Microservicios separados o lógica directa en la interfaz. | Adecuado al tamaño del equipo y al alcance del semestre; menor complejidad de despliegue, a cambio de menor independencia entre módulos. |
 | Hito 2 | Mantener pantallas antiguas en acceso Firestore mientras la API se probaba en Postman. | Migrar toda la interfaz de inmediato. | Permitió aislar y evaluar el backend; quedó pendiente un flujo de producto integrado. |
-| Hito 3 · fecha exacta por completar | Integrar la lista de compras a la API REST y actualizar después de cada operación. | Seguir consultando Firestore desde la pantalla o implementar sincronización en tiempo real. | La UI ahora recorre las capas del servidor; se acepta refresco bajo demanda en vez de tiempo real para mantener un cambio acotado y demostrable. |
-| Hito 3 · fecha exacta por completar | Habilitar conexiones opcionales a Auth y Firestore Emulator mediante configuración local. | Apuntar el flujo de ensayo a registros reales. | Aísla datos sintéticos de producción; el ID de proyecto debe coincidir entre cliente y emuladores. |
+| Hito 3 | Integrar la lista de compras a la API REST y actualizar después de cada operación. | Seguir consultando Firestore desde la pantalla o implementar sincronización en tiempo real. | La UI ahora recorre las capas del servidor; se acepta refresco bajo demanda en vez de tiempo real para mantener un cambio acotado y demostrable. |
+| Hito 3 | Habilitar conexiones opcionales a Auth y Firestore Emulator mediante configuración local. | Apuntar el flujo de ensayo a registros reales. | Aísla datos sintéticos de producción; el ID de proyecto debe coincidir entre cliente y emuladores. |
 
 La decisión actual sigue siendo monolito modular. Se revisaría si el equipo, la carga, la frecuencia de despliegue o la necesidad de escalar dominios independientes aumentan lo suficiente para justificar el costo operativo y la complejidad de microservicios.
 

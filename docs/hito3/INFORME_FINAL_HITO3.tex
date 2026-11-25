@@ -135,7 +135,7 @@ El servidor define \pathcode{comprado=false} y las marcas de tiempo. La validaci
 \section{Modelo de datos y análisis de privacidad}
 La colección del flujo es \pathcode{usuarios/{uid}/listaCompras/{id}}. El documento contiene \pathcode{nombre}, \pathcode{cantidad}, \pathcode{unidad}, \pathcode{comprado}, \pathcode{creadoEn} y \pathcode{actualizadoEn}. Firestore asigna el ID; el UID se deriva del token verificado y no del cuerpo recibido.
 
-La aplicación también trata correo, nombre/apodo, identificador de cuenta, inventario, fechas de vencimiento, ubicaciones, historial, catálogo privado y datos de hogar para gestionar cuenta y funciones del producto. El aviso declara que OCR se procesa en el dispositivo y elimina copias temporales al terminar. La eliminación de cuenta se procesa en servidor; su marca técnica se conserva al menos 24 horas después de completarse, conforme al flujo implementado y descrito.
+La aplicación también trata correo, nombre/apodo, identificador de cuenta, inventario, fechas de vencimiento, ubicaciones, historial, catálogo privado y datos de hogar para gestionar cuenta y funciones del producto. La cámara lee códigos de barras y el vencimiento se ingresa manualmente; la versión actual no guarda ni envía fotografías ni ejecuta OCR de fechas. El aviso visible describe este comportamiento. La eliminación de cuenta se procesa en servidor; su marca técnica se conserva al menos 24 horas después de completarse, conforme al flujo implementado y descrito.
 
 \textbf{Pendiente de privacidad antes de lanzamiento público.} El aviso sigue siendo un borrador: responsable y correo pueden aparecer como “Por definir”. El propio aviso indica que faltan bases de licitud, conservación, respaldos, transferencias internacionales y procedimiento de derechos. Este documento no inventa ni da por resueltos esos elementos. El detalle de datos, finalidades y verificaciones se encuentra en el anexo editable \pathcode{ANEXO\_IA\_Y\_DATOS\_PERSONALES.md}.
 
@@ -146,13 +146,13 @@ La guía facilita repetir la configuración en un equipo limpio, pero ese ensayo
 
 \section{Decisiones y evolución}
 \begin{tabularx}{\textwidth}{>{\bfseries}p{2.55cm}p{3.25cm}YY}
-Etapa/fecha & Decisión & Alternativa & Motivo, impacto y límite\\
+Hito / decisión & Decisión & Alternativa & Motivo, impacto y límite\\
 \midrule
 Hito 1 & Firebase para identidad y datos. & Proveedor separado. & Reutiliza la base del proyecto; mantiene dependencia de Firebase.\\
 Hito 2 & Monolito modular, REST y Firestore. & Microservicios o lógica en UI. & Menos complejidad de despliegue para el tamaño y semestre; menor independencia entre módulos.\\
 Hito 2 & Probar API en Postman antes de migrar pantallas. & Migración inmediata de toda la UI. & Aisló backend, pero dejó el flujo integrado para el hito siguiente.\\
-Hito 3 · fecha por completar & Lista de compras mediante REST, refresco al completar operaciones. & Firestore desde pantalla o tiempo real. & Ahora recorre las capas; se acepta refresco bajo demanda para mantener un cambio acotado.\\
-Hito 3 · fecha por completar & Emulator optativo con variables locales. & Usar registros reales para la demostración. & Aísla datos sintéticos; exige que el ID de proyecto coincida en cliente y emuladores.\\
+Hito 3 & Lista de compras mediante REST, refresco al completar operaciones. & Firestore desde pantalla o tiempo real. & Ahora recorre las capas; se acepta refresco bajo demanda para mantener un cambio acotado.\\
+Hito 3 & Emulator optativo con variables locales. & Usar registros reales para la demostración. & Aísla datos sintéticos; exige que el ID de proyecto coincida en cliente y emuladores.\\
 \end{tabularx}
 
 La postura se mantiene como monolito modular. Se revisaría con aumento significativo del equipo o carga, despliegues independientes frecuentes o necesidad de escalar dominios por separado.

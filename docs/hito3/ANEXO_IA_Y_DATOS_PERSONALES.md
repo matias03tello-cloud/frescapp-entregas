@@ -16,7 +16,7 @@ La herramienta se usó como asistencia de redacción y programación. El equipo 
 | Lista de compras: nombre, cantidad, unidad, estado y marcas de tiempo | Planificar y consultar compras; marcar como comprado | Firestore, bajo `usuarios/{uid}/listaCompras`, accedido en el flujo Hito 3 por la API REST autenticada. |
 | Productos del inventario, categorías, cantidades, vencimientos y ubicación | Mostrar despensa, vencimientos y actividad del usuario | Firestore en colecciones privadas por usuario o por hogar. Las reglas de Firestore limitan el acceso; la API valida el ID token y obtiene el UID desde el token verificado. |
 | Historial, catálogo privado y pertenencia a hogares | Mantener movimientos de inventario, preferencias del producto y colaboración | Subcolecciones privadas y documentos de hogar en Firestore; acceso sujeto a autenticación y reglas. |
-| Imágenes utilizadas para escanear | Leer códigos o fechas cuando la persona inicia el escaneo | El aviso de la app declara procesamiento de OCR en el dispositivo y eliminación de copias temporales; no declara envío de fotografías al servidor. |
+| Datos visuales durante el escaneo | Leer el código de barras cuando la persona activa la cámara; el vencimiento se ingresa manualmente | La pantalla usa la cámara para leer códigos de barras. No guarda ni envía fotografías ni ejecuta OCR de fechas en la versión actual. |
 | Solicitud de eliminación | Bloquear el acceso y completar el borrado de la cuenta y datos privados | El backend procesa la solicitud; la marca técnica de eliminación se conserva al menos 24 horas tras completar el borrado, conforme al flujo descrito por la app. |
 
 ## C. Medidas implementadas y límites
@@ -34,4 +34,4 @@ La herramienta se usó como asistencia de redacción y programación. El equipo 
 - Código de autenticación: [`services/auth.ts`](../../services/auth.ts), [`functions/api/controller.js`](../../functions/api/controller.js).
 - Modelo y permisos: [`firestore.rules`](../../firestore.rules), [`functions/api/repository.js`](../../functions/api/repository.js).
 - Aviso mostrado por la aplicación: [`constants/privacidad.ts`](../../constants/privacidad.ts), [`app/aviso-privacidad.tsx`](../../app/aviso-privacidad.tsx).
-- Lectura en dispositivo: [`services/ocrLocal.ts`](../../services/ocrLocal.ts), [`services/archivosPrivados.ts`](../../services/archivosPrivados.ts).
+- Escaneo y privacidad actuales: [`app/(tabs)/camara.tsx`](../../app/%28tabs%29/camara.tsx), [`constants/privacidad.ts`](../../constants/privacidad.ts).
