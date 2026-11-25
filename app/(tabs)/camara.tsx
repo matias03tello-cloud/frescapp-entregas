@@ -6,18 +6,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTemaApp } from '../../components/mobile/TemaApp';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import * as FileSystem from 'expo-file-system/legacy';
-import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { ActivityIndicator, AppState, Linking, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, AppState, Keyboard, Linking, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { agregarAlInventario, fechaTextoADate } from '../../services/inventarioFirestore';
 import { buscarProductoPorCodigo, guardarProductoCatalogo, reportarErrorProducto } from '../../services/productos';
 import type { CategoriaProducto, ProductoCatalogo, ProductoInventario } from '../../services/productos';
 import { CATEGORIAS, codigoValido } from '../../security/validation';
 import { accionPermisoCamara, crearControlCamara, motivoCamaraWeb } from '../../security/camara';
-import { ejecutarOCRLocal } from '../../services/ocrLocal';
-import { extraerFechasOCR } from '../../services/fechas';
 import { ALIMENTOS_SIN_CODIGO, UBICACIONES, UNIDADES_GRANEL, alimentoGenerico, cantidadValida, validarNombreManual, normalizarBusqueda } from '../../security/identidadProducto';
 
 function Boton({ titulo, onPress, secundario, ocupado, colores }: {
@@ -57,7 +53,6 @@ export default function PantallaCamara() {
   const [ocupado, setOcupado] = useState(false);
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
-  const [verCamaraFecha, setVerCamaraFecha] = useState(false);
   const [reporte, setReporte] = useState<string | null>(null);
   const [flash, setFlash] = useState(false);
   const [enFoco, setEnFoco] = useState(false);
@@ -67,14 +62,23 @@ export default function PantallaCamara() {
   const [errorPermiso, setErrorPermiso] = useState('');
   const [errorCamara, setErrorCamara] = useState('');
   const [escaneoArmado, setEscaneoArmado] = useState(true);
-  const [candidatasFecha, setCandidatasFecha] = useState<string[]>([]);
   const [controlCamara] = useState(crearControlCamara);
   const { id: sesionCamara, lista: camaraLista } = useSyncExternalStore(controlCamara.suscribir, controlCamara.estado, controlCamara.estado);
-  const camara = useRef<CameraView>(null);
   const operacion = useRef(0);
   const bloqueado = useRef(false);
   const { colores } = useTemaApp();
   const scroll = useRef<ScrollView>(null);
+  const mostrarCampoActivo = useCallback(() => {
+    if (!Keyboard.isVisible()) return;
+    const campoActivo = TextInput.State.currentlyFocusedInput();
+    if (campoActivo) scroll.current?.scrollResponderScrollNativeHandleToKeyboard(campoActivo, 16, true);
+  }, []);
+
+  useEffect(() => {
+    if (Platform.OS === 'web' || !enFoco) return;
+    const suscripcion = Keyboard.addListener('keyboardDidShow', mostrarCampoActivo);
+    return () => suscripcion.remove();
+  }, [enFoco, mostrarCampoActivo]);
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
       if (error || mensaje) scroll.current?.scrollToEnd({ animated: true });
@@ -114,7 +118,7 @@ export default function PantallaCamara() {
     // Impide ejecutar la alternativa de expo-camera que descarga WASM desde un CDN.
     lectorIntegrado: typeof (globalThis as { BarcodeDetector?: unknown }).BarcodeDetector === 'function',
   }) : null;
-  const mostrarVisor = paso === 'escaner' || (paso === 'detalle' && verCamaraFecha);
+  const mostrarVisor = paso === 'escaner';
   const habilitarCamara = enFoco && estadoApp === 'active' && permiso?.granted === true
     && mostrarVisor && !revisandoPermiso && !errorPermiso && !errorCamara && !bloqueoWeb;
 
@@ -155,12 +159,12 @@ export default function PantallaCamara() {
     setPaso('inicio'); setProducto(null); setResultado(null); setCodigo('');
     setNombre(''); setMarca(''); setFormato(''); setCategoria(null); setBusqueda('');
     setCantidad('1'); setFecha(''); setSinFecha(false); setReporte(null);
-    setUbicacion('Despensa'); setVerCamaraFecha(false); setError(''); setMensaje(''); setFlash(false);
-    setErrorCamara(''); setEscaneoArmado(true); setCandidatasFecha([]); controlCamara.cerrar();
+    setUbicacion('Despensa'); setError(''); setMensaje(''); setFlash(false);
+    setErrorCamara(''); setEscaneoArmado(true); controlCamara.cerrar();
   };
   const elegir = (p: ProductoCatalogo) => {
-    setProducto(p); setPaso('detalle'); setCantidad('1'); setFecha(''); setCandidatasFecha([]); setFlash(false); controlCamara.cerrar();
-    setSinFecha(p.origen === 'generico'); setReporte(null); setVerCamaraFecha(false);
+    setProducto(p); setPaso('detalle'); setCantidad('1'); setFecha(''); setFlash(false); controlCamara.cerrar();
+    setSinFecha(p.origen === 'generico'); setReporte(null);
     setUbicacion(p.origen === 'generico' ? 'Refrigerador' : 'Despensa');
   };
   const buscarCodigo = (valor: string) => ejecutar(async vigente => {
@@ -191,43 +195,12 @@ export default function PantallaCamara() {
       cantidad: numero, vencimiento: sinFecha ? 'Sin fecha' : fecha, ubicacion };
     if (compraMultiple) { compra.agregar(datos); if (vigente()) { volverInicio(); router.setParams({compra:'0'}); router.push('/registro-compras'); } return; }
     const nuevo = await agregarAlInventario(datos);
-    if (vigente()) { setResultado(nuevo); setPaso('exito'); setVerCamaraFecha(false); }
+    if (vigente()) { setResultado(nuevo); setPaso('exito'); }
   });
-  const leerFecha = () => ejecutar(async vigente => {
-    if (Platform.OS === 'web') throw new Error('Escribe la fecha del envase en el navegador.');
-    const sesion = controlCamara.iniciar();
-    const valida = () => vigente() && controlCamara.vigente(sesion);
-    const vista = camara.current;
-    if (!vista) throw new Error('Activa la cámara para leer la fecha.');
-    let reconocer: (uri: string) => Promise<{ text: string }>;
-    try {
-      const modulo = (await import('@react-native-ml-kit/text-recognition')).default;
-      reconocer = uri => modulo.recognize(uri);
-    } catch {
-      throw new Error('La lectura de fecha necesita la versión instalada de FrescApp con OCR. Mientras tanto, escribe la fecha.');
-    }
-    if (!valida()) return;
-    const lectura = await ejecutarOCRLocal({
-      vigente: valida,
-      capturar: async () => (await vista.takePictureAsync({ quality: 0.8 }))?.uri,
-      reducir: async uri => (await manipulateAsync(uri, [{ resize: { width: 1200 } }], { compress: 0.8, format: SaveFormat.JPEG })).uri,
-      reconocer: async uri => (await reconocer(uri)).text,
-      eliminar: uri => FileSystem.deleteAsync(uri, { idempotent: true }),
-    }).catch(() => { throw new Error('No se pudo leer la foto en el dispositivo. Vuelve a intentar o escribe la fecha.'); });
-    if (!lectura || !valida()) return;
-    const fechas = extraerFechasOCR(lectura.texto);
-    if (!fechas.length) throw new Error('No encontramos una fecha válida. Acerca el envase, mejora la luz o escríbela manualmente.');
-    setCandidatasFecha(fechas); setSinFecha(false); setVerCamaraFecha(false); setFlash(false);
-    // Con varias fechas no se elige entre elaboración y vencimiento por su posición en la foto.
-    setFecha(fechas.length === 1 ? fechas[0] : '');
-    setMensaje((fechas.length === 1 ? 'Compara la fecha detectada con el vencimiento del envase.'
-      : 'Encontramos varias fechas. Selecciona la que el envase indica como vencimiento.')
-      + (lectura.limpiezaPendiente ? ' No se pudo borrar alguna copia temporal de la foto.' : ''));
-  });
-
   const campo = (titulo: string, valor: string, cambiar: (v: string) => void, ejemplo: string, max = 120, teclado: 'default' | 'number-pad' | 'decimal-pad' = 'default') => (
     <View><Text style={[styles.label, { color: colores.texto }]}>{titulo}</Text>
       <TextInput accessibilityLabel={titulo} editable={!ocupado} value={valor} onChangeText={cambiar} placeholder={ejemplo}
+        onFocus={Platform.OS === 'web' ? undefined : mostrarCampoActivo}
         maxLength={max} keyboardType={teclado} placeholderTextColor={colores.secundario}
         style={[styles.input, { color: colores.texto, backgroundColor: colores.tarjeta, borderColor: colores.borde }]} /></View>
   );
@@ -254,26 +227,26 @@ export default function PantallaCamara() {
     </View>;
     if (!habilitarCamara || sesionCamara === null) return <Text style={{ color: colores.secundario }}>La cámara está en pausa.</Text>;
     return <View style={styles.camaraMarco}>
-      <CameraView key={sesionCamara} ref={camara} style={styles.camara} facing="back" mode="picture" mute enableTorch={flash}
+      <CameraView key={sesionCamara} style={styles.camara} facing="back" mode="picture" mute enableTorch={flash}
         onCameraReady={() => { controlCamara.lista(sesionCamara); }}
         onMountError={() => {
           if (controlCamara.estado().id !== sesionCamara) return;
           controlCamara.cerrar(); setFlash(false); setErrorCamara('No se pudo iniciar la cámara. Revisa el permiso o si otra aplicación la está usando.');
         }}
         barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
-        onBarcodeScanned={paso === 'escaner' && camaraLista && escaneoArmado && !ocupado ? ({ data }) => {
+        onBarcodeScanned={camaraLista && escaneoArmado && !ocupado ? ({ data }) => {
           if (!controlCamara.vigente(sesionCamara) || bloqueado.current) return;
           setEscaneoArmado(false); void buscarCodigo(data);
         } : undefined} />
-      <Text style={styles.guiaCamara}>{!camaraLista ? 'Preparando cámara…' : paso === 'escaner' ? 'Centra el código de barras' : 'Centra la fecha del envase'}</Text>
+      <Text style={styles.guiaCamara}>{!camaraLista ? 'Preparando cámara…' : 'Centra el código de barras'}</Text>
       {Platform.OS !== 'web' && <Boton titulo={flash ? 'Apagar luz' : 'Encender luz'} onPress={() => setFlash(!flash)} secundario ocupado={ocupado || !camaraLista} colores={colores} />}
-      {paso === 'escaner' && !escaneoArmado && !ocupado && <Boton titulo="Escanear otra vez" onPress={() => { setEscaneoArmado(true); setError(''); }} secundario ocupado={false} colores={colores} />}
+      {!escaneoArmado && !ocupado && <Boton titulo="Escanear otra vez" onPress={() => { setEscaneoArmado(true); setError(''); }} secundario ocupado={false} colores={colores} />}
     </View>;
   };
 
   const opciones = ALIMENTOS_SIN_CODIGO.filter(([, n]) => normalizarBusqueda(n).includes(normalizarBusqueda(busqueda)));
   return <SafeAreaView edges={['top', 'left', 'right']} style={[styles.pantalla, { backgroundColor: colores.fondo }]}>
-    <ScrollView ref={scroll} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.contenido}>
+    <ScrollView ref={scroll} automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps="handled" contentContainerStyle={styles.contenido}>
       <Text style={[styles.marca, { color: colores.secundario }]}>{paso === 'exito' ? 'REGISTRO COMPLETADO' : paso === 'detalle' ? '2 · COMPLETA EL REGISTRO' : '1 · ELIGE TU ALIMENTO'}</Text>
       <Text style={[styles.titulo, { color: colores.texto }]}>{paso === 'exito' ? 'Listo para tu despensa' : compraMultiple ? 'Preparar compra' : 'Agregar alimento'}</Text>
       {paso !== 'inicio' && paso !== 'exito' && <Boton titulo={'Volver al inicio'} onPress={volverInicio} secundario={true} ocupado={ocupado} colores={colores} />}
@@ -331,13 +304,8 @@ export default function PantallaCamara() {
         <Text style={[styles.label, { color: colores.texto }]}>¿Dónde lo guardarás?</Text>
         {chips(UBICACIONES, ubicacion, u => setUbicacion(u as typeof ubicacion))}
         <Text style={[styles.label, { color: colores.texto }]}>Fecha del envase</Text>
-        {chips(['Con fecha', 'Sin fecha'], sinFecha ? 'Sin fecha' : 'Con fecha', v => { setSinFecha(v === 'Sin fecha'); setVerCamaraFecha(false); })}
-        {!sinFecha && <>
-          {campo('Vencimiento', fecha, setFecha, 'DD/MM/AAAA o MM/AAAA', 10)}
-          {candidatasFecha.length > 1 && <><Text style={[styles.ayuda, { color: colores.secundario }]}>Selecciona el vencimiento que indica el envase:</Text>{chips(candidatasFecha, fecha, setFecha)}</>}
-          {Platform.OS !== 'web' && <Boton titulo={verCamaraFecha ? 'Cerrar cámara de fecha' : 'Leer fecha con cámara'} onPress={() => { setVerCamaraFecha(!verCamaraFecha); setErrorCamara(''); setFlash(false); if (!verCamaraFecha) void refrescarPermiso(); }} secundario={true} ocupado={ocupado} colores={colores} />}
-          {verCamaraFecha && <>{mostrarCamara()}{permiso?.granted && <Boton titulo={'Detectar fecha'} onPress={() => { void leerFecha(); }} secundario={true} ocupado={ocupado || !camaraLista || !habilitarCamara} colores={colores} />}</>}
-        </>}
+        {chips(['Con fecha', 'Sin fecha'], sinFecha ? 'Sin fecha' : 'Con fecha', v => setSinFecha(v === 'Sin fecha'))}
+        {!sinFecha && campo('Vencimiento', fecha, setFecha, 'DD/MM/AAAA o MM/AAAA', 10)}
         <Text style={[styles.ayuda, { color: colores.secundario }]}>{sinFecha ? 'Se guardará sin vencimiento. FrescApp no calculará una fecha estimada.' : 'Comprueba que la fecha corresponda al vencimiento del envase.'}</Text>
         {<Boton titulo={compraMultiple ? 'Añadir al borrador de compra' : 'Guardar en mi despensa'} onPress={() => { void guardar(); }} secundario={false} ocupado={ocupado} colores={colores} />}
       </>}

@@ -2,6 +2,10 @@
 
 Repositorio único de entrega: contiene el código fuente de FrescApp y los materiales organizados por hito. Los repositorios anteriores se mantienen separados e intactos.
 
+## Link de descarga
+
+La APK para Android de FrescApp 5.0.1 está pendiente de publicación.
+
 ## Acceso rápido
 
 | Hito | Material | Acceso |
