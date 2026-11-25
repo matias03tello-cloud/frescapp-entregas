@@ -15,6 +15,10 @@ La APK para Android de FrescApp 5.0.1 está pendiente de publicación.
 | Hito 2 | Documento técnico del backend | [Abrir PDF](docs/hito2/FrescApp-Backend-Hito2.pdf) |
 | Hito 2 | Presentación | [Abrir presentación](https://matias03tello-cloud.github.io/frescapp-entregas/hito2/presentacion/) |
 | Hito 2 | Colección Postman | [Abrir colección](docs/hito2/FrescApp-Hito2.postman_collection.json) |
+| Hito 3 | Documento técnico final | [Abrir PDF](docs/hito3/INFORME_FINAL_HITO3.pdf) |
+| Hito 3 | Manual de instalación y uso | [Abrir manual](docs/hito3/MANUAL_INSTALACION_USO.md) |
+| Hito 3 | Anexo de IA y datos personales | [Abrir anexo](docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md) |
+| Hito 3 | Diagrama actualizado | [Abrir diagrama](docs/hito3/ARQUITECTURA_HITO3.svg) |
 
 El [índice web del proyecto](https://matias03tello-cloud.github.io/frescapp-entregas/) reúne los accesos para presentar y revisar los materiales.
 
@@ -53,6 +57,14 @@ npx.cmd firebase emulators:start --only auth,firestore,functions --project demo-
 
 Las credenciales privadas y los archivos `.env` locales no forman parte del repositorio.
 
-## Hito 3
+## Hito 3 — Integración del producto
 
-La estructura del repositorio permite agregar sus materiales en `docs/hito3/` cuando se publique la pauta oficial. No se incluyen entregables de ese hito antes de conocer sus requisitos.
+- Apartado de entrega: [`docs/hito3/`](docs/hito3/README.md).
+- Informe técnico final PDF y fuentes editables: [`docs/hito3/INFORME_FINAL_HITO3.pdf`](docs/hito3/INFORME_FINAL_HITO3.pdf), [`Markdown`](docs/hito3/INFORME_FINAL_HITO3.md) y [`LaTeX`](docs/hito3/INFORME_FINAL_HITO3.tex).
+- Manual de instalación y uso: [`docs/hito3/MANUAL_INSTALACION_USO.md`](docs/hito3/MANUAL_INSTALACION_USO.md).
+- Diagrama de arquitectura: [`docs/hito3/ARQUITECTURA_HITO3.svg`](docs/hito3/ARQUITECTURA_HITO3.svg).
+- Anexo de IA y análisis de datos personales: [`docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md`](docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md), también integrado al PDF.
+- Flujo integrado: la lista de compras de la app consume la API REST propia; la función persiste en Firestore. La guía local usa Auth, Functions y Firestore Emulator con datos sintéticos.
+- **Video promocional:** pendiente de grabar/publicar; agregar aquí el enlace público cuando el equipo lo tenga. No se presenta un enlace ficticio.
+- La prueba en un equipo limpio, la evidencia en vivo y la confirmación de despliegue productivo quedan identificadas como pendientes en los documentos.
+

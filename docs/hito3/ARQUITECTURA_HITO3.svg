@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Arquitectura de FrescApp para el Hito 3</title>
+  <desc id="desc">La interfaz móvil o web consulta la lista de compras mediante un hook y servicio cliente, una API REST autenticada en Cloud Functions, un servicio de dominio y repositorio de datos, y Firestore.</desc>
+  <defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#2554a6"/></marker><filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#17305c" flood-opacity=".12"/></filter></defs>
+  <rect width="1200" height="720" rx="24" fill="#f4f7fc"/>
+  <text x="56" y="66" font-family="Segoe UI,Arial,sans-serif" font-size="30" font-weight="700" fill="#102f75">FrescApp · Arquitectura integrada</text>
+  <text x="56" y="102" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#50617c">Hito 3 · Flujo principal: crear, consultar, actualizar y eliminar una compra</text>
+  <g filter="url(#shadow)" font-family="Segoe UI,Arial,sans-serif">
+    <rect x="55" y="186" width="225" height="162" rx="18" fill="#ffffff" stroke="#c8d7ef" stroke-width="2"/>
+    <rect x="55" y="186" width="225" height="42" rx="18" fill="#1246a8"/><path d="M55 210H280V228H55Z" fill="#1246a8"/>
+    <text x="75" y="214" font-size="17" font-weight="700" fill="#ffffff">Presentación</text>
+    <text x="75" y="264" font-size="16" font-weight="700" fill="#17233d">Expo / React Native</text>
+    <text x="75" y="292" font-size="14" fill="#52617a">Web y móvil</text>
+    <text x="75" y="320" font-size="14" fill="#52617a">Carga, lista vacía y error</text>
+
+    <rect x="335" y="186" width="225" height="162" rx="18" fill="#ffffff" stroke="#c8d7ef" stroke-width="2"/>
+    <rect x="335" y="186" width="225" height="42" rx="18" fill="#2357b5"/><path d="M335 210H560V228H335Z" fill="#2357b5"/>
+    <text x="355" y="214" font-size="17" font-weight="700" fill="#ffffff">Cliente</text>
+    <text x="355" y="264" font-size="16" font-weight="700" fill="#17233d">Hook de compras</text>
+    <text x="355" y="292" font-size="14" fill="#52617a">Validación de entrada</text>
+    <text x="355" y="320" font-size="14" fill="#52617a">Token Firebase + fetch REST</text>
+
+    <rect x="615" y="186" width="225" height="162" rx="18" fill="#ffffff" stroke="#c8d7ef" stroke-width="2"/>
+    <rect x="615" y="186" width="225" height="42" rx="18" fill="#2d65bc"/><path d="M615 210H840V228H615Z" fill="#2d65bc"/>
+    <text x="635" y="214" font-size="17" font-weight="700" fill="#ffffff">Interfaz REST propia</text>
+    <text x="635" y="264" font-size="16" font-weight="700" fill="#17233d">Cloud Functions v2</text>
+    <text x="635" y="292" font-size="14" fill="#52617a">Verifica ID token y CORS</text>
+    <text x="635" y="320" font-size="14" fill="#52617a">/api/v1/lista-compras</text>
+
+    <rect x="895" y="186" width="250" height="162" rx="18" fill="#ffffff" stroke="#c8d7ef" stroke-width="2"/>
+    <rect x="895" y="186" width="250" height="42" rx="18" fill="#3474c8"/><path d="M895 210H1145V228H895Z" fill="#3474c8"/>
+    <text x="915" y="214" font-size="17" font-weight="700" fill="#ffffff">Capas de servidor</text>
+    <text x="915" y="264" font-size="16" font-weight="700" fill="#17233d">Controlador → Servicio</text>
+    <text x="915" y="292" font-size="14" fill="#52617a">Validador de dominio</text>
+    <text x="915" y="320" font-size="14" fill="#52617a">Repositorio aislado</text>
+  </g>
+  <g stroke="#2554a6" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M280 267H326"/><path d="M560 267H606"/><path d="M840 267H886"/><path d="M1018 348V441"/>
+    <path d="M895 480H850"/><path d="M615 480H570"/><path d="M335 480H290"/>
+  </g>
+  <g filter="url(#shadow)" font-family="Segoe UI,Arial,sans-serif">
+    <rect x="895" y="442" width="250" height="130" rx="18" fill="#ffffff" stroke="#c8d7ef" stroke-width="2"/>
+    <rect x="895" y="442" width="250" height="42" rx="18" fill="#165b9c"/><path d="M895 466H1145V484H895Z" fill="#165b9c"/>
+    <text x="915" y="470" font-size="17" font-weight="700" fill="#ffffff">Persistencia</text>
+    <text x="915" y="518" font-size="16" font-weight="700" fill="#17233d">Cloud Firestore</text>
+    <text x="915" y="546" font-size="14" fill="#52617a">usuarios/{uid}/listaCompras</text>
+    <rect x="615" y="442" width="225" height="130" rx="18" fill="#ffffff" stroke="#c8d7ef" stroke-width="2"/>
+    <rect x="615" y="442" width="225" height="42" rx="18" fill="#367da7"/><path d="M615 466H840V484H615Z" fill="#367da7"/>
+    <text x="635" y="470" font-size="17" font-weight="700" fill="#ffffff">Identidad</text>
+    <text x="635" y="518" font-size="16" font-weight="700" fill="#17233d">Firebase Auth</text>
+    <text x="635" y="546" font-size="14" fill="#52617a">Token firmado · UID</text>
+    <rect x="335" y="442" width="225" height="130" rx="18" fill="#ffffff" stroke="#c8d7ef" stroke-width="2"/>
+    <rect x="335" y="442" width="225" height="42" rx="18" fill="#5185a9"/><path d="M335 466H560V484H335Z" fill="#5185a9"/>
+    <text x="355" y="470" font-size="17" font-weight="700" fill="#ffffff">Entorno local</text>
+    <text x="355" y="518" font-size="16" font-weight="700" fill="#17233d">Firebase Emulator</text>
+    <text x="355" y="546" font-size="14" fill="#52617a">Auth · Functions · Firestore</text>
+    <rect x="55" y="442" width="225" height="130" rx="18" fill="#eaf0fb" stroke="#c8d7ef" stroke-width="2"/>
+    <text x="75" y="479" font-size="16" font-weight="700" fill="#102f75">Flujo de respuesta</text>
+    <text x="75" y="510" font-size="14" fill="#52617a">JSON + código HTTP</text>
+    <text x="75" y="536" font-size="14" fill="#52617a">→ estado y pantalla</text>
+  </g>
+  <text x="56" y="656" font-family="Segoe UI,Arial,sans-serif" font-size="14" fill="#687995">Las operaciones de la lista pasan por la API REST propia; el UID no se recibe desde el cuerpo de la solicitud.</text>
+</svg>

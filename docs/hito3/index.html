@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Entregables del Hito 3 de FrescApp: integración, informe, manual y anexos." />
+    <title>FrescApp · Hito 3</title>
+    <style>
+      :root { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #17233d; background: #f4f7fc; }
+      * { box-sizing: border-box; }
+      body { margin: 0; }
+      header { padding: 44px max(24px, calc((100vw - 1000px) / 2)); color: white; background: linear-gradient(125deg, #123c9b, #1765bb); }
+      h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); }
+      header p { color: #e3ecff; line-height: 1.6; margin-bottom: 0; }
+      main { width: min(1000px, calc(100% - 40px)); margin: 30px auto 56px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; }
+      article { border: 1px solid #d7e1f1; border-radius: 16px; padding: 24px; background: white; box-shadow: 0 8px 24px #19356a0d; }
+      h2 { color: #123c9b; margin-top: 0; }
+      p, li { line-height: 1.65; }
+      a { color: #1246a8; font-weight: 650; }
+      .button { display: inline-block; padding: 11px 16px; border-radius: 9px; color: white; background: #1246a8; text-decoration: none; }
+      ul { padding-left: 20px; }
+      .status { padding: 14px 16px; margin: 20px 0; border-left: 4px solid #d18a00; border-radius: 8px; background: #fff7e5; }
+      footer { color: #66748b; font-size: .92rem; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Hito 3 · Integración del producto</h1>
+      <p>FrescApp conecta la lista de compras de las interfaces móvil y web con su propia API REST y persiste los registros en Firestore.</p>
+    </header>
+    <main>
+      <p class="status"><strong>Pendiente del equipo:</strong> grabar y publicar el video de hasta dos minutos, realizar el ensayo en un equipo limpio y añadir evidencia de la demostración. Este portal no inventa enlaces ni pruebas.</p>
+      <section class="grid" aria-label="Entregables Hito 3">
+        <article>
+          <h2>Informe técnico</h2>
+          <p>Arquitectura, flujo integrado, tecnologías, contrato REST, privacidad, cambios y límites actuales.</p>
+          <a class="button" href="INFORME_FINAL_HITO3.pdf">Abrir PDF</a>
+          <ul><li><a href="INFORME_FINAL_HITO3.md">Fuente editable Markdown</a></li><li><a href="INFORME_FINAL_HITO3.tex">Fuente LaTeX</a></li></ul>
+        </article>
+        <article>
+          <h2>Instalación y uso</h2>
+          <p>Requisitos de Windows, instalación, configuración de emuladores, datos de prueba y solución de errores comunes.</p>
+          <a class="button" href="MANUAL_INSTALACION_USO.md">Abrir manual</a>
+        </article>
+        <article>
+          <h2>Anexos y arquitectura</h2>
+          <p>Declaración de uso de IA, análisis de los datos personales tratados y diagrama de capas actualizado.</p>
+          <ul><li><a href="ANEXO_IA_Y_DATOS_PERSONALES.md">Anexo IA y datos personales</a></li><li><a href="ARQUITECTURA_HITO3.svg">Diagrama SVG</a></li></ul>
+        </article>
+      </section>
+      <footer><a href="../">Volver al índice general de FrescApp</a> · Demo local con datos sintéticos; no se confirma un despliegue productivo.</footer>
+    </main>
+  </body>
+</html>

@@ -21,8 +21,17 @@ async function ignoreMissing(operation) {
 }
 const hogares = require('./hogares').crearGestorHogares({ db, FieldValue, Timestamp, HttpsError });
 exports.gestionarHogar = onCall(options, request => hogares.gestionar(request));
-// API REST propia para el Hito 2. Mantiene la persistencia actual en Firestore.
-exports.api = onRequest({ region: options.region, maxInstances: options.maxInstances },
+// API REST propia de FrescApp. Mantiene la persistencia en Firestore.
+exports.api = onRequest({
+  region: options.region,
+  maxInstances: options.maxInstances,
+  cors: [
+    /^https?:\/\/localhost(?::\d+)?$/u,
+    /^https?:\/\/127\.0\.0\.1(?::\d+)?$/u,
+    'https://super-ahorro-app.web.app',
+    'https://super-ahorro-app.firebaseapp.com',
+  ],
+},
   require('./api').crearApiRest({ db, adminAuth }));
 const deletionDeps = {
   disableAndRevoke: async uid => {

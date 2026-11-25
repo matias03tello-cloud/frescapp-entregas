@@ -1,0 +1,179 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[a4paper,margin=2.05cm,headheight=15pt]{geometry}
+\usepackage{xcolor,graphicx,hyperref,booktabs,tabularx,array,longtable,enumitem,fancyhdr,titlesec,tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.misc}
+\definecolor{azul}{HTML}{103B91}
+\definecolor{azulmedio}{HTML}{245CB5}
+\definecolor{azulclaro}{HTML}{EAF0FB}
+\definecolor{texto}{HTML}{1B2940}
+\definecolor{gris}{HTML}{52617A}
+\hypersetup{colorlinks=true,linkcolor=azul,urlcolor=azulmedio,pdftitle={FrescApp - Informe tecnico final Hito 3},pdfauthor={Equipo FrescApp}}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.22}
+\setlist[itemize]{leftmargin=1.3em,itemsep=2pt,topsep=3pt}
+\titleformat{\section}{\Large\bfseries\color{azul}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\color{azulmedio}}{}{0pt}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\bfseries\color{azul}FRESCAPP}
+\fancyhead[R]{\small\color{gris}Hito 3 · Informe técnico final}
+\fancyfoot[L]{\small\color{gris}INGT1003 · Arquitectura de Desarrollo}
+\fancyfoot[R]{\small\color{gris}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\pathcode}[1]{\texttt{\small #1}}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[azul] (current page.north west) rectangle ([yshift=-8.7cm]current page.north east);
+  \fill[azulmedio] ([yshift=-8.7cm]current page.north west) rectangle ([yshift=-8.82cm]current page.north east);
+\end{tikzpicture}
+\vspace*{1.45cm}
+{\color{white}\Large\bfseries UNIVERSIDAD MAYOR\par}
+{\color{white!85}\large Escuela de Ingeniería Civil\par}
+\vspace{2.25cm}
+{\color{white!75}\large PROYECTO SEMESTRAL · INGT1003\par}
+\vspace{0.35cm}
+{\color{white}\Huge\bfseries FrescApp\par}
+\vspace{0.15cm}
+{\color{white}\LARGE Informe técnico final\par}
+{\color{white!90}\Large Hito 3 · Integración del producto\par}
+\vspace{1.1cm}
+{\color{white!85}\large De la interfaz al servicio REST y la persistencia\par}
+\vfill
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.4cm}Y}
+Asignatura & INGT1003 · Arquitectura de Desarrollo (Móvil y Web)\\
+Proyecto & FrescApp\\
+Versión & 1.0 · Revisión final y demostración manual pendientes\\
+\end{tabularx}
+\vspace{1.25cm}
+\begin{center}\small\color{gris}Documento preparado a partir del repositorio consolidado. Describe el estado comprobable del código y explicita los trabajos que requieren una ejecución del equipo.\end{center}
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Resumen y alcance}
+FrescApp ayuda a organizar alimentos del hogar, sus vencimientos y una lista de compras. Este hito conecta la interfaz móvil/web con el servicio propio creado en el Hito 2 mediante un flujo completo de lista de compras. El cliente envía solicitudes REST autenticadas; Cloud Functions verifica la sesión, valida cada operación y persiste en Cloud Firestore. La interfaz presenta espera, lista vacía y error, y vuelve a consultar los datos después de cada cambio.
+
+La demostración reproducible documentada utiliza Firebase Emulator Suite y registros sintéticos. No se comprobó un despliegue funcional de la función REST en producción; por ello este informe no ofrece una URL productiva como evidencia. El ensayo en un segundo equipo y la grabación del video siguen pendientes.
+
+El Hito 1 definió FrescApp como una aplicación móvil/web para administrar alimentos del hogar. El Hito 2 añadió API REST, Firestore, validadores y capas de servidor, mientras las pantallas de la lista aún leían y escribían directamente en Firestore. En el Hito 3 se conecta esa lista al servicio REST existente. El inventario y las demás funciones mantienen su flujo previo; no se migraron todas las pantallas.
+
+\section{Flujo principal integrado}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.6cm}Y}
+Interfaz Expo & Captura nombre, cantidad y unidad; presenta carga, resultado, estado vacío y error.\\
+Hook de compras & \pathcode{services/compras.ts} coordina sesión, estado y operaciones de la pantalla.\\
+Cliente REST & \pathcode{services/comprasApi.ts} obtiene un ID token vigente y llama GET, POST, PATCH o DELETE.\\
+Controlador & Verifica token, cuenta y formato; convierte fallos a JSON y códigos HTTP.\\
+Servicio y validadores & Aplican las reglas del dominio de la lista de compras.\\
+Repositorio & Aísla las operaciones de consulta y persistencia.\\
+Firestore & Conserva documentos por cuenta bajo \pathcode{usuarios/{uid}/listaCompras}.\\
+\end{tabularx}
+
+Al crear una compra, la pantalla envía nombre, cantidad y unidad. La función obtiene el UID del token verificado, asigna ID y marcas de tiempo, y devuelve el recurso. Al recargar la pantalla, los registros se consultan nuevamente a través de la API. La persistencia de la demostración local depende de que los emuladores sigan ejecutándose.
+
+\section{Arquitectura y responsabilidades}
+FrescApp conserva un monolito modular: un proyecto móvil/web y una función HTTP organizada por módulos; Firestore y Authentication son servicios gestionados. No se dividió en microservicios. La interfaz de compras ya no consulta Firestore; el flujo recorre presentación, cliente REST, controlador, servicio, validador, repositorio y persistencia.
+
+\begin{center}
+\begin{tikzpicture}[
+  bloque/.style={draw=azulmedio,rounded corners=5pt,fill=azulclaro,minimum height=1.55cm,text width=3.35cm,align=center,font=\small,inner sep=7pt},
+  flecha/.style={-{Stealth[length=2.2mm]},thick,draw=azulmedio}]
+  \node[bloque] (ui) {\textbf{Presentación}\\Expo web y móvil\\carga · vacío · error};
+  \node[bloque,right=0.48cm of ui] (client) {\textbf{Cliente REST}\\hook + servicio\\ID token};
+  \node[bloque,right=0.48cm of client] (api) {\textbf{API propia}\\Cloud Functions v2\\controlador y validación};
+  \node[bloque,right=0.48cm of api] (layers) {\textbf{Capas servidor}\\servicio de dominio\\repositorio};
+  \draw[flecha] (ui) -- (client); \draw[flecha] (client) -- node[above,font=\scriptsize]{HTTPS/JSON} (api); \draw[flecha] (api) -- (layers);
+  \node[bloque,below=0.72cm of layers,text width=3.35cm] (db) {\textbf{Cloud Firestore}\\\pathcode{usuarios/{uid}/listaCompras}};
+  \draw[flecha] (layers) -- (db);
+  \node[bloque,below=0.72cm of api,text width=3.35cm] (auth) {\textbf{Firebase Auth}\\token firmado\\identidad y UID};
+  \draw[flecha] (client) |- (auth); \draw[flecha] (auth) -| (api);
+\end{tikzpicture}
+\end{center}
+
+El Admin SDK del servidor no queda limitado por las reglas aplicadas al SDK cliente. Por eso el controlador verifica el ID token, deriva el UID y el servicio valida el dominio antes de delegar en el repositorio. Las reglas de Firestore siguen siendo un control separado para el acceso directo de otras partes de la app.
+
+\section{Tecnologías y razones}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.1cm}YY}
+Tecnología & Uso y razón & Costo o límite aceptado\\
+\midrule
+Expo, React Native, Expo Router & Base compartida para móvil y web, navegación y capacidades del dispositivo. & Funciones nativas requieren builds y validación por plataforma; web no sustituye prueba móvil.\\
+TypeScript & Modela datos y permite detectar errores de tipos durante el desarrollo. & No reemplaza la validación en servidor.\\
+Firebase Authentication & Gestiona cuentas y emite el ID token de sesión. & Dependencia del proveedor Firebase.\\
+Cloud Functions v2, Node.js 22 & Ejecuta la API bajo demanda junto a Firestore. & Dependencia de Firebase; publicar producción requiere configuración y facturación adecuadas.\\
+API REST propia & Contrato explícito HTTP/JSON entre interfaz y servidor; no llama APIs externas para este flujo. & No da actualizaciones en tiempo real; la app vuelve a consultar tras cada cambio.\\
+Cloud Firestore & Persistencia NoSQL de documentos por usuario. & Hay que mantener coherentes modelo, validadores y reglas.\\
+Firebase Emulator Suite & Pruebas locales de Auth, Functions y Firestore sin datos de demostración en producción. & Los registros dependen de la sesión del emulador y no equivalen a un servicio publicado.\\
+\end{tabularx}
+
+La función HTTP permite solicitudes desde los orígenes locales y dominios Firebase Hosting definidos para FrescApp. CORS habilita la respuesta del navegador; no autentica usuarios ni autoriza operaciones.
+
+\section{Contrato REST y validaciones}
+Base local: \url{http://127.0.0.1:5001/demo-frescapp-hito3/southamerica-west1/api}. Todas las rutas requieren \pathcode{Authorization: Bearer <Firebase ID token>}; POST y PATCH usan \pathcode{Content-Type: application/json}.
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{4.0cm}YY}
+Método y ruta & Operación & Éxito y errores principales\\
+\midrule
+GET \pathcode{/api/v1/lista-compras?limit=100\&cursor=...} & Lista paginada. & 200; errores 400, 401, 403, 500.\\
+GET \pathcode{/api/v1/lista-compras/{id}} & Consulta un recurso. & 200; errores 400, 401, 403, 404, 500.\\
+POST \pathcode{/api/v1/lista-compras} & Crea. & 201 + Location; errores 400, 401, 403, 415, 500.\\
+PATCH \pathcode{/api/v1/lista-compras/{id}} & Modifica campos permitidos; la app cambia \pathcode{comprado}. & 200; errores 400, 401, 403, 404, 415, 500.\\
+DELETE \pathcode{/api/v1/lista-compras/{id}} & Borra. & 204 sin cuerpo; errores 401, 403, 404, 500.\\
+\end{tabularx}
+
+Ejemplo de alta:
+\begin{quote}\ttfamily\small
+\{ "nombre": "Arroz demostración", "cantidad": 2, "unidad": "unidad" \}
+\end{quote}
+El servidor define \pathcode{comprado=false} y las marcas de tiempo. La validación comprueba nombre, unidad y cantidad; unidades exige entero y se aceptan hasta tres decimales en las demás cantidades. El error se representa como \pathcode{\{error:\{code,message\}\}} y no revela detalles internos.
+
+\section{Modelo de datos y análisis de privacidad}
+La colección del flujo es \pathcode{usuarios/{uid}/listaCompras/{id}}. El documento contiene \pathcode{nombre}, \pathcode{cantidad}, \pathcode{unidad}, \pathcode{comprado}, \pathcode{creadoEn} y \pathcode{actualizadoEn}. Firestore asigna el ID; el UID se deriva del token verificado y no del cuerpo recibido.
+
+La aplicación también trata correo, nombre/apodo, identificador de cuenta, inventario, fechas de vencimiento, ubicaciones, historial, catálogo privado y datos de hogar para gestionar cuenta y funciones del producto. El aviso declara que OCR se procesa en el dispositivo y elimina copias temporales al terminar. La eliminación de cuenta se procesa en servidor; su marca técnica se conserva al menos 24 horas después de completarse, conforme al flujo implementado y descrito.
+
+\textbf{Pendiente de privacidad antes de lanzamiento público.} El aviso sigue siendo un borrador: responsable y correo pueden aparecer como “Por definir”. El propio aviso indica que faltan bases de licitud, conservación, respaldos, transferencias internacionales y procedimiento de derechos. Este documento no inventa ni da por resueltos esos elementos. El detalle de datos, finalidades y verificaciones se encuentra en el anexo editable \pathcode{ANEXO\_IA\_Y\_DATOS\_PERSONALES.md}.
+
+\section{Instalación y uso}
+El manual de instalación y uso, ubicado en \pathcode{docs/hito3/MANUAL\_INSTALACION\_USO.md}, acompaña este informe con requisitos, comandos, datos sintéticos y errores frecuentes. En Windows se instalan dependencias con \pathcode{npm.cmd ci} en la raíz y \pathcode{npm.cmd ci --prefix functions}; luego se levantan Auth, Firestore y Functions Emulator con el proyecto \pathcode{demo-frescapp-hito3}. Expo Web se inicia en una segunda ventana.
+
+La guía facilita repetir la configuración en un equipo limpio, pero ese ensayo aún debe realizarlo el equipo y conservar su evidencia. Tampoco se declara una URL publicada que no se haya comprobado.
+
+\section{Decisiones y evolución}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{2.55cm}p{3.25cm}YY}
+Etapa/fecha & Decisión & Alternativa & Motivo, impacto y límite\\
+\midrule
+Hito 1 & Firebase para identidad y datos. & Proveedor separado. & Reutiliza la base del proyecto; mantiene dependencia de Firebase.\\
+Hito 2 & Monolito modular, REST y Firestore. & Microservicios o lógica en UI. & Menos complejidad de despliegue para el tamaño y semestre; menor independencia entre módulos.\\
+Hito 2 & Probar API en Postman antes de migrar pantallas. & Migración inmediata de toda la UI. & Aisló backend, pero dejó el flujo integrado para el hito siguiente.\\
+Hito 3 · fecha por completar & Lista de compras mediante REST, refresco al completar operaciones. & Firestore desde pantalla o tiempo real. & Ahora recorre las capas; se acepta refresco bajo demanda para mantener un cambio acotado.\\
+Hito 3 · fecha por completar & Emulator optativo con variables locales. & Usar registros reales para la demostración. & Aísla datos sintéticos; exige que el ID de proyecto coincida en cliente y emuladores.\\
+\end{tabularx}
+
+La postura se mantiene como monolito modular. Se revisaría con aumento significativo del equipo o carga, despliegues independientes frecuentes o necesidad de escalar dominios por separado.
+
+\section{Estado, video y limitaciones}
+El código conecta la lista de compras de la app a la API propia y documenta cómo demostrarla localmente. La verificación de extremo a extremo en equipo limpio, capturas de la ejecución y confirmación de persistencia tras recargar aún deben realizarse manualmente. No se confirmó despliegue productivo.
+
+La pauta pide un video de hasta dos minutos: 20 segundos para presentar el problema, 80 segundos de producto real en funcionamiento y 20 segundos de promesa y cierre. El video no se ha grabado ni publicado; se agregará su enlace al README cuando el equipo lo produzca. La grabación no puede sustituirse por una maqueta ni por un enlace ficticio.
+
+\section{Anexo de uso de IA}
+Se usó OpenAI ChatGPT/Codex como apoyo para revisar requisitos, organizar los entregables, integrar el cliente de la lista a la API y redactar el informe y manual. El equipo debe contrastar el resultado con la pauta y el repositorio, ejecutar el flujo completo con datos sintéticos, revisar errores y controles de seguridad, y corregir diferencias antes de entregar. La asistencia no reemplaza la responsabilidad del equipo ni una demostración manual.
+
+\section{Referencias técnicas}
+\begin{enumerate}[label={[\arabic*]},leftmargin=2.1em,itemsep=3pt]
+\item Firebase, \emph{Call functions via HTTP requests}. \url{https://firebase.google.com/docs/functions/http-events}
+\item Firebase, \emph{Verify ID tokens}. \url{https://firebase.google.com/docs/auth/admin/verify-id-tokens}
+\item Firebase, \emph{Connect your app to the Cloud Functions emulator}. \url{https://firebase.google.com/docs/functions/local-emulator}
+\item Firebase, \emph{Writing conditions for Cloud Firestore Security Rules}. \url{https://firebase.google.com/docs/firestore/security/rules-conditions}
+\item Expo, \emph{SDK 54}. \url{https://expo.dev/changelog/sdk-54}. El lockfile define la versión instalada; este documento no afirma que el proyecto use SDK 54.
+\item Fielding, R., Nottingham, M. y Reschke, J. (2022), \emph{HTTP Semantics, RFC 9110}. \url{https://www.rfc-editor.org/rfc/rfc9110.html}
+\end{enumerate}
+
+\vfill\small\color{gris}Informe editable en formato LaTeX y Markdown.
+\end{document}

@@ -2,6 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createUserWithEmailAndPassword,
+  connectAuthEmulator,
   EmailAuthProvider,
   getAuth, initializeAuth,
   reauthenticateWithCredential,
@@ -27,6 +28,14 @@ catch (e) {
   instance = getAuth(app);
 }
 export const auth = instance;
+if (process.env.EXPO_PUBLIC_USE_FIREBASE_EMULATORS === 'true') {
+  const host = process.env.EXPO_PUBLIC_FIREBASE_EMULATOR_HOST?.trim() || '127.0.0.1';
+  try { connectAuthEmulator(auth, `http://${host}:9099`, { disableWarnings: true }); }
+  catch (error) {
+    // Fast Refresh puede volver a evaluar este módulo con la conexión ya activa.
+    if (!(error instanceof Error) || !error.message.toLowerCase().includes('already')) throw error;
+  }
+}
 let operando = false;
 const listeners = new Set<() => void>();
 export const operacionCuentaEnCurso = () => operando;
