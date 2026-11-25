@@ -11,7 +11,7 @@ Esta carpeta reúne los entregables documentales del Hito 3 y sus fuentes editab
 | Documento técnico editable | [Fuente Markdown](INFORME_FINAL_HITO3.md) y [fuente LaTeX](INFORME_FINAL_HITO3.tex) | Listo para mantener junto al PDF |
 | Diagrama actualizado | [Arquitectura Hito 3 (SVG)](ARQUITECTURA_HITO3.svg) | Basado en las capas y rutas del código actual |
 | Manual de instalación y uso | [Manual](MANUAL_INSTALACION_USO.md) | Preparado con requisitos, comandos, datos sintéticos y soluciones a errores frecuentes |
-| Video promocional de hasta 2 minutos | Enlace a incorporar en el [README principal](../../README.md) | **Pendiente de grabar y publicar por el equipo**; no se inventó un enlace |
+| Video promocional de hasta 2 minutos | [VIDEO_PROMOCIONAL_HITO3.mp4](VIDEO_PROMOCIONAL_HITO3.mp4) | Incluido; duración de 43 segundos. Revisar que el contenido cubra la pauta de presentación, demostración y cierre |
 | Anexo de IA y análisis de datos personales | [Anexo editable](ANEXO_IA_Y_DATOS_PERSONALES.md), también incorporado al informe PDF | Preparado; destaca los datos y las partes de privacidad que aún deben completar antes de un lanzamiento público |
 
 ## Recorrido demostrable
@@ -31,4 +31,5 @@ La configuración de la app permite apuntar Auth, Firestore y la API REST a Fire
 - [Informe editable](INFORME_FINAL_HITO3.md)
 - [Análisis de IA y datos](ANEXO_IA_Y_DATOS_PERSONALES.md)
 - [Diagrama de arquitectura](ARQUITECTURA_HITO3.svg)
+- [Video promocional (43 segundos)](VIDEO_PROMOCIONAL_HITO3.mp4)
 - [Contrato REST de lista de compras](../../functions/api/README.md)

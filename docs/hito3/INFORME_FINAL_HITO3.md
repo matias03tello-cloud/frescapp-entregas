@@ -2,15 +2,15 @@
 
 **Asignatura:** INGT1003 · Arquitectura de Desarrollo (Móvil y Web)
 **Proyecto:** FrescApp
-**Versión:** 1.0 · **Estado:** revisión final y demostración manual pendientes
+**Versión:** 1.0 · **Estado:** video incluido; ensayo y demostración manual pendientes
 
-> Este informe describe el código y los documentos incluidos en esta entrega. No presenta como realizadas la prueba en un equipo limpio, el despliegue productivo ni la grabación del video cuando aún no hay evidencia de esas actividades.
+> Este informe describe el código y los documentos incluidos en esta entrega. No presenta como realizadas la prueba en un equipo limpio ni el despliegue productivo cuando aún falta evidencia de esas actividades.
 
 ## 1. Resumen
 
 FrescApp ayuda a organizar alimentos del hogar, sus vencimientos y una lista de compras. El Hito 3 integra la interfaz móvil/web con el servicio propio del Hito 2 mediante un flujo completo de lista de compras. El cliente envía solicitudes REST autenticadas; Cloud Functions verifica el token, valida cada operación y persiste en Cloud Firestore. La aplicación distingue carga, lista vacía y error, y vuelve a consultar los datos después de cada cambio.
 
-La demostración reproducible documentada usa Firebase Emulator Suite y registros sintéticos. No se comprobó un despliegue funcional de la función REST en producción; por ello el informe no ofrece una URL productiva como evidencia. El ensayo en un segundo equipo y el video siguen pendientes.
+La demostración reproducible documentada usa Firebase Emulator Suite y registros sintéticos. No se comprobó un despliegue funcional de la función REST en producción; por ello el informe no ofrece una URL productiva como evidencia. El video promocional está incluido en la carpeta del Hito 3; siguen pendientes el ensayo en un segundo equipo y la evidencia de ejecución.
 
 ## 2. Alcance y relación con los hitos anteriores
 
@@ -76,11 +76,11 @@ La API valida nombre, unidad y cantidad; la unidad `unidad` exige cantidad enter
 
 La colección usada por el flujo es `usuarios/{uid}/listaCompras/{id}`. Cada documento contiene `nombre`, `cantidad`, `unidad`, `comprado`, `creadoEn` y `actualizadoEn`. El ID no se entrega desde el cliente; Firestore lo asigna. El UID se deriva del token validado, no de un campo del cuerpo.
 
-La aplicación también trata correo, nombre/apodo, identificador de cuenta, inventario, fechas de vencimiento, ubicaciones, historial, catálogo privado y datos de hogar. La cámara se activa para leer códigos de barras; el vencimiento se ingresa manualmente. La versión actual no guarda ni envía fotografías ni ejecuta OCR de fechas. El aviso visible fue ajustado para describir este comportamiento.
+La app trata correo, nombre/apodo, ID de cuenta, inventario, vencimientos, ubicaciones, historial, catálogo privado y datos del hogar. La cámara lee códigos; el vencimiento se ingresa manualmente. La app no guarda ni envía fotos ni ejecuta OCR de fechas.
 
-Las operaciones REST verifican el ID token y validan datos en el servidor; el acceso por SDK cliente se controla además con reglas de Firestore. La eliminación de cuenta tiene un flujo servidor y una solicitud técnica que se conserva al menos 24 horas después de completarse, según el código y el aviso actual.
+La API verifica el ID token y valida entradas; las reglas de Firestore controlan el acceso por SDK. El flujo de borrado conserva una marca técnica durante al menos 24 horas después de completarse.
 
-**Límite de privacidad identificado:** el aviso sigue marcado como borrador y muestra responsable y contacto como “Por definir” si no se configuran. También señala que faltan bases de licitud, conservación, respaldos, transferencias internacionales y procedimiento de derechos. No se consideran resueltos por este informe ni deben inventarse. Ver [anexo de IA y datos personales](ANEXO_IA_Y_DATOS_PERSONALES.md).
+**Límite de privacidad:** el aviso sigue como borrador y puede mostrar responsable y contacto “Por definir”. Las bases de licitud, conservación, respaldos, transferencias y procedimiento de derechos deben definirse antes de un lanzamiento público. Ver [anexo de IA y datos personales](ANEXO_IA_Y_DATOS_PERSONALES.md).
 
 ## 8. Instalación, uso y demostración
 
@@ -100,9 +100,9 @@ La guía permite repetir el procedimiento en otra máquina, pero el equipo aún 
 
 La decisión actual sigue siendo monolito modular. Se revisaría si el equipo, la carga, la frecuencia de despliegue o la necesidad de escalar dominios independientes aumentan lo suficiente para justificar el costo operativo y la complejidad de microservicios.
 
-## 10. Video promocional y entregables pendientes
+## 10. Video promocional y cierre de entregables
 
-La pauta solicita un video de hasta 2 minutos: 20 segundos para el problema, 80 segundos mostrando el producto real funcionando y 20 segundos para la promesa/cierre. El video no se ha grabado ni publicado en esta entrega; se debe agregar su enlace público al README cuando el equipo lo produzca. La grabación debe mostrar la app real y no una maqueta.
+El video promocional del equipo está incluido en [VIDEO_PROMOCIONAL_HITO3.mp4](VIDEO_PROMOCIONAL_HITO3.mp4) y dura 43 segundos, bajo el máximo de 2 minutos. La pauta recomienda presentar el problema, mostrar el producto real funcionando y cerrar con la promesa; el equipo debe confirmar que el contenido del archivo cubre esos momentos.
 
 También quedan por cerrar la ejecución manual en un equipo limpio, la evidencia de recarga persistente y la confirmación del dominio responsable/contacto y contenidos legales del aviso de privacidad.
 

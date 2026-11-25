@@ -19,6 +19,7 @@ La APK para Android de FrescApp 5.0.1 está pendiente de publicación.
 | Hito 3 | Manual de instalación y uso | [Abrir manual](docs/hito3/MANUAL_INSTALACION_USO.md) |
 | Hito 3 | Anexo de IA y datos personales | [Abrir anexo](docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md) |
 | Hito 3 | Diagrama actualizado | [Abrir diagrama](docs/hito3/ARQUITECTURA_HITO3.svg) |
+| Hito 3 | Video promocional (43 segundos) | [Reproducir o descargar](docs/hito3/VIDEO_PROMOCIONAL_HITO3.mp4) |
 
 El [índice web del proyecto](https://matias03tello-cloud.github.io/frescapp-entregas/) reúne los accesos para presentar y revisar los materiales.
 
@@ -65,6 +66,6 @@ Las credenciales privadas y los archivos `.env` locales no forman parte del repo
 - Diagrama de arquitectura: [`docs/hito3/ARQUITECTURA_HITO3.svg`](docs/hito3/ARQUITECTURA_HITO3.svg).
 - Anexo de IA y análisis de datos personales: [`docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md`](docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md), también integrado al PDF.
 - Flujo integrado: la lista de compras de la app consume la API REST propia; la función persiste en Firestore. La guía local usa Auth, Functions y Firestore Emulator con datos sintéticos.
-- **Video promocional:** pendiente de grabar/publicar; agregar aquí el enlace público cuando el equipo lo tenga. No se presenta un enlace ficticio.
+- **Video promocional (43 segundos):** [reproducir o descargar](docs/hito3/VIDEO_PROMOCIONAL_HITO3.mp4). La revisión final de su contenido frente a la pauta queda a cargo del equipo.
 - La prueba en un equipo limpio, la evidencia en vivo y la confirmación de despliegue productivo quedan identificadas como pendientes en los documentos.
 

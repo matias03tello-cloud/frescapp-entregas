@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | OpenAI ChatGPT/Codex | Revisión de la pauta; propuesta de estructura del apartado Hito 3; apoyo al cliente REST, la conexión local a emuladores, el manual y el borrador del informe técnico | Contrastar el texto con la pauta y el código publicado; ejecutar el flujo con emuladores; revisar cambios con el equipo; verificar que no se expongan secretos y que los errores sean comprensibles. |
 
-La herramienta se usó como asistencia de redacción y programación. El equipo conserva la responsabilidad por las decisiones, el código y la versión final. La revisión automatizada o estática no sustituye una demostración manual. La prueba final en un equipo limpio y la grabación del video están pendientes.
+La herramienta se usó como asistencia de redacción y programación. El equipo conserva la responsabilidad por las decisiones, el código y la versión final. La revisión automatizada o estática no sustituye una demostración manual. La prueba final en un equipo limpio sigue pendiente; el video promocional de 43 segundos está incluido y el equipo debe revisar que cubra la pauta.
 
 ## B. Datos personales y de uso tratados por la aplicación
 

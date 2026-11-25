@@ -19,6 +19,7 @@
       p, li { line-height: 1.65; }
       a { color: #1246a8; font-weight: 650; }
       .button { display: inline-block; padding: 11px 16px; border-radius: 9px; color: white; background: #1246a8; text-decoration: none; }
+      video { display: block; width: 100%; max-height: 560px; margin: 12px 0; border-radius: 10px; background: #101828; }
       ul { padding-left: 20px; }
       .status { padding: 14px 16px; margin: 20px 0; border-left: 4px solid #d18a00; border-radius: 8px; background: #fff7e5; }
       footer { color: #66748b; font-size: .92rem; margin-top: 24px; }
@@ -30,7 +31,7 @@
       <p>FrescApp conecta la lista de compras de las interfaces móvil y web con su propia API REST y persiste los registros en Firestore.</p>
     </header>
     <main>
-      <p class="status"><strong>Pendiente del equipo:</strong> grabar y publicar el video de hasta dos minutos, realizar el ensayo en un equipo limpio y añadir evidencia de la demostración. Este portal no inventa enlaces ni pruebas.</p>
+      <p class="status"><strong>Pendiente del equipo:</strong> realizar el ensayo en un equipo limpio y añadir evidencia de la demostración. El video ya está incorporado; falta revisar que cubra todo el contenido recomendado por la pauta.</p>
       <section class="grid" aria-label="Entregables Hito 3">
         <article>
           <h2>Informe técnico</h2>
@@ -47,6 +48,15 @@
           <h2>Anexos y arquitectura</h2>
           <p>Declaración de uso de IA, análisis de los datos personales tratados y diagrama de capas actualizado.</p>
           <ul><li><a href="ANEXO_IA_Y_DATOS_PERSONALES.md">Anexo IA y datos personales</a></li><li><a href="ARQUITECTURA_HITO3.svg">Diagrama SVG</a></li></ul>
+        </article>
+        <article>
+          <h2>Video promocional</h2>
+          <p>Video del equipo, con una duración de 43 segundos.</p>
+          <video controls preload="metadata" aria-label="Video promocional de FrescApp">
+            <source src="VIDEO_PROMOCIONAL_HITO3.mp4" type="video/mp4" />
+            Tu navegador no puede reproducir este video. <a href="VIDEO_PROMOCIONAL_HITO3.mp4">Descargar MP4</a>.
+          </video>
+          <a class="button" href="VIDEO_PROMOCIONAL_HITO3.mp4" download>Descargar video</a>
         </article>
       </section>
       <footer><a href="../">Volver al índice general de FrescApp</a> · Demo local con datos sintéticos; no se confirma un despliegue productivo.</footer>

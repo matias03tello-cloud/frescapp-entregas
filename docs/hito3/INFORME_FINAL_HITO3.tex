@@ -48,7 +48,7 @@
 \begin{tabularx}{\textwidth}{>{\bfseries}p{3.4cm}Y}
 Asignatura & INGT1003 · Arquitectura de Desarrollo (Móvil y Web)\\
 Proyecto & FrescApp\\
-Versión & 1.0 · Revisión final y demostración manual pendientes\\
+Versión & 1.0 · Video incluido; ensayo y demostración manual pendientes\\
 \end{tabularx}
 \vspace{1.25cm}
 \begin{center}\small\color{gris}Documento preparado a partir del repositorio consolidado. Describe el estado comprobable del código y explicita los trabajos que requieren una ejecución del equipo.\end{center}
@@ -60,7 +60,7 @@ Versión & 1.0 · Revisión final y demostración manual pendientes\\
 \section{Resumen y alcance}
 FrescApp ayuda a organizar alimentos del hogar, sus vencimientos y una lista de compras. Este hito conecta la interfaz móvil/web con el servicio propio creado en el Hito 2 mediante un flujo completo de lista de compras. El cliente envía solicitudes REST autenticadas; Cloud Functions verifica la sesión, valida cada operación y persiste en Cloud Firestore. La interfaz presenta espera, lista vacía y error, y vuelve a consultar los datos después de cada cambio.
 
-La demostración reproducible documentada utiliza Firebase Emulator Suite y registros sintéticos. No se comprobó un despliegue funcional de la función REST en producción; por ello este informe no ofrece una URL productiva como evidencia. El ensayo en un segundo equipo y la grabación del video siguen pendientes.
+La demostración reproducible documentada utiliza Firebase Emulator Suite y registros sintéticos. No se comprobó un despliegue funcional de la función REST en producción; por ello este informe no ofrece una URL productiva como evidencia. El video está incluido en la carpeta del Hito 3; siguen pendientes el ensayo en un segundo equipo y la evidencia de ejecución.
 
 El Hito 1 definió FrescApp como una aplicación móvil/web para administrar alimentos del hogar. El Hito 2 añadió API REST, Firestore, validadores y capas de servidor, mientras las pantallas de la lista aún leían y escribían directamente en Firestore. En el Hito 3 se conecta esa lista al servicio REST existente. El inventario y las demás funciones mantienen su flujo previo; no se migraron todas las pantallas.
 
@@ -135,9 +135,9 @@ El servidor define \pathcode{comprado=false} y las marcas de tiempo. La validaci
 \section{Modelo de datos y análisis de privacidad}
 La colección del flujo es \pathcode{usuarios/{uid}/listaCompras/{id}}. El documento contiene \pathcode{nombre}, \pathcode{cantidad}, \pathcode{unidad}, \pathcode{comprado}, \pathcode{creadoEn} y \pathcode{actualizadoEn}. Firestore asigna el ID; el UID se deriva del token verificado y no del cuerpo recibido.
 
-La aplicación también trata correo, nombre/apodo, identificador de cuenta, inventario, fechas de vencimiento, ubicaciones, historial, catálogo privado y datos de hogar para gestionar cuenta y funciones del producto. La cámara lee códigos de barras y el vencimiento se ingresa manualmente; la versión actual no guarda ni envía fotografías ni ejecuta OCR de fechas. El aviso visible describe este comportamiento. La eliminación de cuenta se procesa en servidor; su marca técnica se conserva al menos 24 horas después de completarse, conforme al flujo implementado y descrito.
+La app trata correo, nombre/apodo, ID de cuenta, inventario, vencimientos, ubicaciones, historial, catálogo privado y datos del hogar. La cámara lee códigos; el vencimiento se ingresa manualmente. La app no guarda ni envía fotos ni ejecuta OCR de fechas. La API verifica el ID token y valida entradas; las reglas de Firestore controlan el acceso por SDK. El flujo de borrado conserva una marca técnica durante al menos 24 horas después de completarse.
 
-\textbf{Pendiente de privacidad antes de lanzamiento público.} El aviso sigue siendo un borrador: responsable y correo pueden aparecer como “Por definir”. El propio aviso indica que faltan bases de licitud, conservación, respaldos, transferencias internacionales y procedimiento de derechos. Este documento no inventa ni da por resueltos esos elementos. El detalle de datos, finalidades y verificaciones se encuentra en el anexo editable \pathcode{ANEXO\_IA\_Y\_DATOS\_PERSONALES.md}.
+\textbf{Límite de privacidad.} El aviso sigue como borrador y puede mostrar responsable y contacto “Por definir”. Las bases de licitud, conservación, respaldos, transferencias y procedimiento de derechos deben definirse antes de un lanzamiento público. El detalle está en el anexo editable \pathcode{ANEXO\_IA\_Y\_DATOS\_PERSONALES.md}.
 
 \section{Instalación y uso}
 El manual de instalación y uso, ubicado en \pathcode{docs/hito3/MANUAL\_INSTALACION\_USO.md}, acompaña este informe con requisitos, comandos, datos sintéticos y errores frecuentes. En Windows se instalan dependencias con \pathcode{npm.cmd ci} en la raíz y \pathcode{npm.cmd ci --prefix functions}; luego se levantan Auth, Firestore y Functions Emulator con el proyecto \pathcode{demo-frescapp-hito3}. Expo Web se inicia en una segunda ventana.
@@ -160,7 +160,7 @@ La postura se mantiene como monolito modular. Se revisaría con aumento signific
 \section{Estado, video y limitaciones}
 El código conecta la lista de compras de la app a la API propia y documenta cómo demostrarla localmente. La verificación de extremo a extremo en equipo limpio, capturas de la ejecución y confirmación de persistencia tras recargar aún deben realizarse manualmente. No se confirmó despliegue productivo.
 
-La pauta pide un video de hasta dos minutos: 20 segundos para presentar el problema, 80 segundos de producto real en funcionamiento y 20 segundos de promesa y cierre. El video no se ha grabado ni publicado; se agregará su enlace al README cuando el equipo lo produzca. La grabación no puede sustituirse por una maqueta ni por un enlace ficticio.
+El video promocional está incluido en \href{VIDEO_PROMOCIONAL_HITO3.mp4}{VIDEO\_PROMOCIONAL\_HITO3.mp4} y dura 43 segundos, bajo el máximo de dos minutos. La pauta recomienda presentar el problema, mostrar el producto real funcionando y cerrar con la promesa; el equipo debe confirmar que el archivo cubre esos momentos.
 
 \section{Anexo de uso de IA}
 Se usó OpenAI ChatGPT/Codex como apoyo para revisar requisitos, organizar los entregables, integrar el cliente de la lista a la API y redactar el informe y manual. El equipo debe contrastar el resultado con la pauta y el repositorio, ejecutar el flujo completo con datos sintéticos, revisar errores y controles de seguridad, y corregir diferencias antes de entregar. La asistencia no reemplaza la responsabilidad del equipo ni una demostración manual.
