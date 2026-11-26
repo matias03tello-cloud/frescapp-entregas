@@ -4,7 +4,7 @@ Repositorio único de entrega: contiene el código fuente de FrescApp y los mate
 
 ## Link de descarga
 
-La APK para Android de FrescApp 5.0.1 está pendiente de publicación.
+[Descargar e instalar FrescApp para Android (APK v5.0.0, build 10)](https://expo.dev/accounts/k1ng03/projects/arq-app-compras/builds/d8896eae-3eda-4013-a2d7-579f303d4006). El enlace abre la ficha pública del build de distribución interna.
 
 ## Acceso rápido
 
@@ -20,6 +20,7 @@ La APK para Android de FrescApp 5.0.1 está pendiente de publicación.
 | Hito 3 | Anexo de IA y datos personales | [Abrir anexo](docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md) |
 | Hito 3 | Diagrama actualizado | [Abrir diagrama](docs/hito3/ARQUITECTURA_HITO3.svg) |
 | Hito 3 | Video promocional (43 segundos) | [Reproducir o descargar](docs/hito3/VIDEO_PROMOCIONAL_HITO3.mp4) |
+| Hito 3 | Aplicación Android (APK) | [Descargar e instalar](https://expo.dev/accounts/k1ng03/projects/arq-app-compras/builds/d8896eae-3eda-4013-a2d7-579f303d4006) |
 
 El [índice web del proyecto](https://matias03tello-cloud.github.io/frescapp-entregas/) reúne los accesos para presentar y revisar los materiales.
 
@@ -64,8 +65,10 @@ Las credenciales privadas y los archivos `.env` locales no forman parte del repo
 - Informe técnico final PDF y fuentes editables: [`docs/hito3/INFORME_FINAL_HITO3.pdf`](docs/hito3/INFORME_FINAL_HITO3.pdf), [`Markdown`](docs/hito3/INFORME_FINAL_HITO3.md) y [`LaTeX`](docs/hito3/INFORME_FINAL_HITO3.tex).
 - Manual de instalación y uso: [`docs/hito3/MANUAL_INSTALACION_USO.md`](docs/hito3/MANUAL_INSTALACION_USO.md).
 - Diagrama de arquitectura: [`docs/hito3/ARQUITECTURA_HITO3.svg`](docs/hito3/ARQUITECTURA_HITO3.svg).
+- **Aplicación Android (APK v5.0.0, build 10):** [descargar e instalar](https://expo.dev/accounts/k1ng03/projects/arq-app-compras/builds/d8896eae-3eda-4013-a2d7-579f303d4006).
 - Anexo de IA y análisis de datos personales: [`docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md`](docs/hito3/ANEXO_IA_Y_DATOS_PERSONALES.md), también integrado al PDF.
 - Flujo integrado: la lista de compras de la app consume la API REST propia; la función persiste en Firestore. La guía local usa Auth, Functions y Firestore Emulator con datos sintéticos.
 - **Video promocional (43 segundos):** [reproducir o descargar](docs/hito3/VIDEO_PROMOCIONAL_HITO3.mp4). La revisión final de su contenido frente a la pauta queda a cargo del equipo.
 - La prueba en un equipo limpio, la evidencia en vivo y la confirmación de despliegue productivo quedan identificadas como pendientes en los documentos.
+
 
