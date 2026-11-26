@@ -11,6 +11,7 @@ Esta carpeta reúne los entregables documentales del Hito 3 y sus fuentes editab
 | Documento técnico editable | [Fuente Markdown](INFORME_FINAL_HITO3.md) y [fuente LaTeX](INFORME_FINAL_HITO3.tex) | Listo para mantener junto al PDF |
 | Diagrama actualizado | [Arquitectura Hito 3 (SVG)](ARQUITECTURA_HITO3.svg) | Basado en las capas y rutas del código actual |
 | Manual de instalación y uso | [Manual](MANUAL_INSTALACION_USO.md) | Preparado con requisitos, comandos, datos sintéticos y soluciones a errores frecuentes |
+| Aplicación Android (APK) | [Descargar FrescApp v5.0.0 (build 10)](https://expo.dev/accounts/k1ng03/projects/arq-app-compras/builds/d8896eae-3eda-4013-a2d7-579f303d4006) | Build interno de Android listo para instalar |
 | Video promocional de hasta 2 minutos | [VIDEO_PROMOCIONAL_HITO3.mp4](VIDEO_PROMOCIONAL_HITO3.mp4) | Incluido; duración de 43 segundos. Revisar que el contenido cubra la pauta de presentación, demostración y cierre |
 | Anexo de IA y análisis de datos personales | [Anexo editable](ANEXO_IA_Y_DATOS_PERSONALES.md), también incorporado al informe PDF | Preparado; destaca los datos y las partes de privacidad que aún deben completar antes de un lanzamiento público |
 
@@ -32,4 +33,6 @@ La configuración de la app permite apuntar Auth, Firestore y la API REST a Fire
 - [Análisis de IA y datos](ANEXO_IA_Y_DATOS_PERSONALES.md)
 - [Diagrama de arquitectura](ARQUITECTURA_HITO3.svg)
 - [Video promocional (43 segundos)](VIDEO_PROMOCIONAL_HITO3.mp4)
+- [Descargar e instalar FrescApp para Android (APK v5.0.0, build 10)](https://expo.dev/accounts/k1ng03/projects/arq-app-compras/builds/d8896eae-3eda-4013-a2d7-579f303d4006)
 - [Contrato REST de lista de compras](../../functions/api/README.md)
+
